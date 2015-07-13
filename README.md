@@ -21,9 +21,9 @@ If you get an error on `Protobuf` compilation, add this to `build/Protobuf-prefi
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -undefined dynamic_lookup")
 endif()
-``
+```
 
-If you get an error on `unittest_proto3_arena.proto`, replace `build/Protobuf-prefix/src/Protobuf/src/google/protobuf/unittest_proto3_arena.proto` and `build/Protobuf-python-prefix/src/Protobuf-python/src/google/protobuf/unittest_proto3_arena.proto` with (this one)[https://raw.githubusercontent.com/google/protobuf/master/src/google/protobuf/unittest_proto3_arena.proto].
+If you get an error on `unittest_proto3_arena.proto`, replace `build/Protobuf-prefix/src/Protobuf/src/google/protobuf/unittest_proto3_arena.proto` and `build/Protobuf-python-prefix/src/Protobuf-python/src/google/protobuf/unittest_proto3_arena.proto` with [this one](https://raw.githubusercontent.com/google/protobuf/master/src/google/protobuf/unittest_proto3_arena.proto).
 
 
 ## Ubuntu
