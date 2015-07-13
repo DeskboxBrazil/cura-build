@@ -16,6 +16,16 @@ cmake ..
 make
 ```
 
+If you get an error on `Protobuf` compilation, add this to `build/Protobuf-prefix/src/Protobuf/CMakeLists.txt`:
+```cmake
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  set(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -undefined dynamic_lookup")
+endif()
+``
+
+If you get an error on `unittest_proto3_arena.proto`, replace `build/Protobuf-prefix/src/Protobuf/src/google/protobuf/unittest_proto3_arena.proto` and `build/Protobuf-python-prefix/src/Protobuf-python/src/google/protobuf/unittest_proto3_arena.proto` with (this one)[https://raw.githubusercontent.com/google/protobuf/master/src/google/protobuf/unittest_proto3_arena.proto].
+
+
 ## Ubuntu
 
 See [ubuntu-15.04-build-script.sh](ubuntu-15.04-build-script.sh) for building under Ubuntu 15.04.
