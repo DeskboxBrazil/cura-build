@@ -95,7 +95,7 @@ if(BUILD_PYSERIAL)
     )
 endif()
 
-ExternalProject_Add(Protobuf 
+ExternalProject_Add(Protobuf
     GIT_REPOSITORY https://github.com/ultimaker/protobuf
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=Release -DINSTALL_PYTHON=OFF
 )
@@ -109,7 +109,7 @@ ExternalProject_Add(Protobuf-python
     BUILD_IN_SOURCE 1
 )
 
-ExternalProject_Add(Arcus 
+ExternalProject_Add(Arcus
     DEPENDS Python Protobuf
     GIT_REPOSITORY https://github.com/ultimaker/libArcus
     GIT_TAG ${TAG_OR_BRANCH}
@@ -125,12 +125,12 @@ ExternalProject_Add(CuraEngine
 
 ExternalProject_Add(Uranium
     DEPENDS PyQt Arcus
-    GIT_REPOSITORY https://github.com/ultimaker/Uranium
+    GIT_REPOSITORY https://github.com/DeskboxBrazil/Uranium
     GIT_TAG ${TAG_OR_BRANCH}
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX}
 )
 
-ExternalProject_Add(Cura 
+ExternalProject_Add(Cura
     DEPENDS Uranium CuraEngine
     GIT_REPOSITORY https://github.com/ultimaker/Cura
     GIT_TAG ${TAG_OR_BRANCH}
@@ -156,7 +156,7 @@ if(APPLE)
     configure_file(setup_osx.py.in setup_osx.py @ONLY)
 
     add_custom_command(
-        OUTPUT ${CMAKE_BINARY_DIR}/dist/Cura.app 
+        OUTPUT ${CMAKE_BINARY_DIR}/dist/Cura.app
         COMMAND ${PYTHON_EXECUTABLE}
         ARGS setup_osx.py py2app
         COMMENT "Running py2app"
