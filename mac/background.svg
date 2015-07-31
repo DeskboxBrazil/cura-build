@@ -15,10 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   inkscape:export-filename="/home/martin/tmp/background.png"
+   inkscape:export-filename="/Users/martin/Documents/Deskbox/cura-build/mac/background.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"
-   sodipodi:docname="dmg-background.svg">
+   sodipodi:docname="background.svg">
   <defs
      id="defs4">
     <clipPath
@@ -64,7 +64,7 @@
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="224.55714"
+     inkscape:cx="63.05714"
      inkscape:cy="305.60265"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
