@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+echo "Mounting local $(dirname $PWD) as remote /vagrant"
+vagrant ssh --command "sshfs $USER@10.0.2.2:$(dirname $PWD) /vagrant"
+
+echo "Mounting remote /Users/vagrant/build as local $PWD/build"
+echo "Password: vagrant"
+mkdir -p build
+sshfs vagrant@192.168.33.10:/Users/vagrant/build $PWD/build

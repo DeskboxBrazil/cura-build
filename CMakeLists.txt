@@ -156,15 +156,15 @@ if(APPLE)
     configure_file(setup_osx.py.in setup_osx.py @ONLY)
 
     add_custom_command(
-        OUTPUT ${CMAKE_BINARY_DIR}/dist/Cura.app
+        OUTPUT ${CMAKE_BINARY_DIR}/dist/Deskbox.app
         COMMAND ${PYTHON_EXECUTABLE}
         ARGS setup_osx.py py2app
         COMMENT "Running py2app"
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 
-    add_custom_target(build_app ALL DEPENDS ${CMAKE_BINARY_DIR}/dist/Cura.app)
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/Cura.app DESTINATION "." USE_SOURCE_PERMISSIONS)
+    add_custom_target(build_app ALL DEPENDS ${CMAKE_BINARY_DIR}/dist/Deskbox.app)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/Deskbox.app DESTINATION "." USE_SOURCE_PERMISSIONS)
 
     set(CPACK_GENERATOR "DragNDrop")
 elseif(WIN32)
