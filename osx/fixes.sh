@@ -20,13 +20,19 @@ for lang_dir in $build_dir/Cura-prefix/src/Cura/resources/i18n/*/; do
     msgfmt fdmprinter.json.po -o fdmprinter.json.mo
     lconvert -i cura_qt.po -o cura_qt.ts -target-language $lang_dir
     lrelease -compress -silent cura_qt.ts -qm cura_qt.qm
+    compiled_lang_dir=$build_dir/dist/Deskbox.app/Contents/Resources/cura/resources/i18n/$lang_dir/LC_MESSAGES
+    mkdir -p $compiled_lang_dir
+    cp -rv * $compiled_lang_dir
 done
-cp -rv $build_dir/Cura-prefix/src/Cura/resources/i18n/* $build_dir/dist/Deskbox.app/Contents/Resources/cura/resources/i18n
 
 # Uranium
 cd $build_dir/Uranium-prefix/src/Uranium-build
 make translations
 make copy-translations
-cp -rv ?? $build_dir/dist/Deskbox.app/Contents/Resources/uranium/resources/i18n/
+for lang_dir in ??/; do
+    compiled_lang_dir=$build_dir/dist/Deskbox.app/Contents/Resources/uranium/resources/i18n/$lang_dir/LC_MESSAGES
+    mkdir -p $compiled_lang_dir
+    cp -rv $lang_dir/* $compiled_lang_dir
+done
 
 echo "Fixes applied."
