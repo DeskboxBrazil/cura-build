@@ -14,10 +14,11 @@ echo 'Put translations in place.'
 
 # Cura
 for lang_dir in $build_dir/Cura-prefix/src/Cura/resources/i18n/*/; do
+    echo $lang_dir
     cd $lang_dir
     msgfmt cura.po -o cura.mo
     msgfmt fdmprinter.json.po -o fdmprinter.json.mo
-    lconvert -i cura_qt.po -o cura_qt.ts -target-language pt
+    lconvert -i cura_qt.po -o cura_qt.ts -target-language $lang_dir
     lrelease -compress -silent cura_qt.ts -qm cura_qt.qm
 done
 cp -rv $build_dir/Cura-prefix/src/Cura/resources/i18n/* $build_dir/dist/Deskbox.app/Contents/Resources/cura/resources/i18n
@@ -27,3 +28,5 @@ cd $build_dir/Uranium-prefix/src/Uranium-build
 make translations
 make copy-translations
 cp -rv ?? $build_dir/dist/Deskbox.app/Contents/Resources/uranium/resources/i18n/
+
+echo "Fixes applied."
