@@ -14,20 +14,20 @@ import glob
 import shutil
 
 OPTIONS = {
-	"argv_emulation": False, 
+	"argv_emulation": False,
 	"includes": [
 		"sip",
-		"ctypes", 
+		"ctypes",
 	    "UM",
 	    "cura",
-	    "PyQt5.QtNetwork", 
-	    "PyQt5._QOpenGLFunctions_2_0", 
-	    "serial", 
-	    "Arcus", 
-	    "google", 
-	    "google.protobuf", 
-	    "google.protobuf.descriptor", 
-	    "xml.etree", 
+	    "PyQt5.QtNetwork",
+	    "PyQt5._QOpenGLFunctions_2_0",
+	    "serial",
+	    "Arcus",
+	    "google",
+	    "google.protobuf",
+	    "google.protobuf.descriptor",
+	    "xml.etree",
 	    "xml.etree.ElementTree"
 	],
 	"resources": [
@@ -39,7 +39,7 @@ OPTIONS = {
 		"inst/share/uranium",
 		"inst/lib/python3.4/site-packages/UM/Qt/qml",
 	],
-        "iconfile": "@CMAKE_SOURCE_DIR@/cura.icns"
+        "iconfile": "@CMAKE_SOURCE_DIR@/Cura.icns"
 }
 
 # Extend options.includes to include all files from the UM package.
@@ -57,11 +57,11 @@ for dirpath, dirnames, filenames in os.walk(os.path.dirname(UM.__file__)):
             OPTIONS["includes"] += [module_name + "." + os.path.splitext(filename)[0]]
 
 setup(
-	name="Cura",
+	name="Deskbox",
     app=["inst/bin/cura_app.py"],
     version="@CURA_MAJOR_VERSION@.@CURA_MINOR_VERSION@.@CURA_PATCH_VERSION@",
-    author="Ultimaker",
-    url="http://software.ultimaker.com/",
+    author="Deskbox",
+    url="http://deskbox.com.br",
     license="GNU AFFERO GENERAL PUBLIC LICENSE (AGPL)",
     options={"py2app": OPTIONS },
     setup_requires=['py2app'],
@@ -69,11 +69,11 @@ setup(
 
 # Copy the backend executable
 print("Copying CuraEngine to Contents/MacOS")
-shutil.copy("inst/bin/CuraEngine", "dist/Cura.app/Contents/MacOS/CuraEngine")
+shutil.copy("inst/bin/CuraEngine", "dist/Deskbox.app/Contents/MacOS/CuraEngine")
 
-# Remove all *_debug.x.dylib files since we do not need them but py2app copies 
+# Remove all *_debug.x.dylib files since we do not need them but py2app copies
 # them anyway.
-for path, dirs, files in os.walk("dist/Cura.app/Contents"):
+for path, dirs, files in os.walk("dist/Deskbox.app/Contents"):
 	for file in files:
 		if "debug" in file:
 			print("Removing {0}".format(file))

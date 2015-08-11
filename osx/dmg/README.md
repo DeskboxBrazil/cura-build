@@ -3,9 +3,9 @@ To use it:
 
 1. Build the application as described in `../README.md`.
 
-2. Copy the `python34.zip` file from this folder to `../build/dist/Cura.app/Contents/Resources/lib`, replacing the already existing one there:
+2. Copy the `python34.zip` file from this folder to `../build/dist/Deskbox.app/Contents/Resources/lib`, replacing the already existing one there:
 ```shell
-cp python34.zip ../build/dist/Cura.app/Contents/Resources
+cp python34.zip ../build/dist/Deskbox.app/Contents/Resources
 ```
 
 3. Install [dmgbuild](https://bitbucket.org/al45tair/dmgbuild):  
