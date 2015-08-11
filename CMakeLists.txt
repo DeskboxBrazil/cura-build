@@ -25,7 +25,7 @@ endif()
 
 set(CURA_MAJOR_VERSION "15")
 set(CURA_MINOR_VERSION "06")
-set(CURA_PATCH_VERSION "02")
+set(CURA_PATCH_VERSION "03")
 
 set(TAG_OR_BRANCH "15.06" CACHE STRING "The name of the tag or branch to build")
 set(EXTERNALPROJECT_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/inst)
@@ -137,6 +137,13 @@ ExternalProject_Add(Cura
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX} -DURANIUM_SCRIPTS_DIR=
 )
 
+ExternalProject_Add(cura-binary-data
+    DEPENDS Cura
+    GIT_REPOSITORY https://github.com/ultimaker/cura-binary-data
+    GIT_TAG ${TAG_OR_BRANCH}
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX}
+)
+
 if(APPLE)
     ExternalProject_Add(Py2App
         DEPENDS Python
@@ -174,12 +181,15 @@ else()
     set(CPACK_GENERATOR "DEB")
 
     set(CPACK_INSTALL_CMAKE_PROJECTS
-        "${CMAKE_BINARY_DIR}/Arcus-prefix/src/Arcus-build;Arcus;ALL;/usr"
         "${CMAKE_BINARY_DIR}/CuraEngine-prefix/src/CuraEngine-build;CuraEngine;ALL;/usr"
         "${CMAKE_BINARY_DIR}/Uranium-prefix/src/Uranium-build;Uranium;ALL;/usr"
         "${CMAKE_BINARY_DIR}/Cura-prefix/src/Cura-build;Cura;ALL;/usr"
+        "${CMAKE_BINARY_DIR}/cura-binary-data-prefix/src/cura-binary-data-build;cura-binary-data;ALL;/usr"
     )
-    set(CPACK_INSTALLED_DIRECTORIES "${CMAKE_BINARY_DIR}/inst/lib/python3.4/site-packages/google;/usr/lib/python3/dist-packages/google")
+    set(CPACK_INSTALLED_DIRECTORIES
+        "${CMAKE_BINARY_DIR}/inst/lib/python3.4/site-packages/google;/usr/lib/python3/dist-packages/google"
+        "${CMAKE_BINARY_DIR}/inst/lib/python3/dist-packages/Arcus;/usr/lib/python3/dist-packages/Arcus"
+    )
 endif()
 
 set(CPACK_PACKAGE_NAME "Cura")
