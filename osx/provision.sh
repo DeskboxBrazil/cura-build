@@ -12,6 +12,9 @@ brew link --force openssl
 brew link --force qt5
 brew cask update
 brew cask install sshfs
+# DMGBuild
+sudo easy_install pip
+sudo pip install dmgbuild
 
 # Mount points
 sudo mkdir -p /vagrant
