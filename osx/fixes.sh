@@ -1,14 +1,9 @@
-#!/bin/sh
+#!/bin/sh -e
 # This script fixes some glitches in the build process.
 # Hopefully it will not be necessary anymore soon.
 # Run it in the build directory inside the build machine.
 
-set -e
-
 build_dir=$(pwd)
-
-echo 'Replace python34.zip.'
-cp /vagrant/osx/lib/python34.zip $build_dir/dist/Deskbox.app/Contents/Resources/lib
 
 echo 'Put translations in place.'
 
