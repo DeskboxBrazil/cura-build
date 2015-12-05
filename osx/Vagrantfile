@@ -5,10 +5,10 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  # Originally used the Andrew Dryga box, now we switched to another one.
-  # But if you need, you'll find more information about them here:
-  # https://github.com/AndrewDryga/vagrant-box-osx
-  config.vm.box = "jhcook/osx-yosemite-10.10"
+  # Using the Andrew Dryga box from https://github.com/AndrewDryga/vagrant-box-osx
+  config.vm.box = "AndrewDryga/vagrant-box-osx"
+  # If that one doesn't work you can try this other:
+  #config.vm.box = "jhcook/osx-yosemite-10.10"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -18,8 +18,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_agent = true
   config.ssh.insert_key = false
 
-  #config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
-  #config.vm.synced_folder ".", "/vagrant", :nfs => { :mount_options => ["dmode=777","fmode=777"] }
+  config.vm.synced_folder "..", "/vagrant", type: "rsync", rsync__exclude: ".*"
+  #config.vm.synced_folder "..", "/vagrant", :nfs => { :mount_options => ["dmode=777","fmode=777"] }
 
   config.vm.provider "virtualbox" do |vb|
     # Do/don't boot with headless mode

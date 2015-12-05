@@ -5,6 +5,7 @@ Follow the instructions below to build the OS X package:
     * [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
     * [Vagrant](https://www.vagrantup.com/downloads.html)
     * [Git](https://git-scm.com/downloads)
+    * [RSync](https://rsync.samba.org/download.html)
 2. Open a terminal/command/console window and run the following commands, one at a time:
 ```shell
 git clone https://github.com/DeskboxBrazil/cura-build.git
@@ -28,4 +29,7 @@ make
 ```shell
 dmgbuild -s /vagrant/osx/dmg/package.py Deskbox dist/Deskbox.dmg
 ```
-6. The installation package inside the virtual machine, in the `/Users/vagrant/build/dist` directory, with the name `Deskbox.dmg`.
+6. The installation package inside the virtual machine, in the `/Users/vagrant/build/dist` directory, with the name `Deskbox.dmg`. You can copy it anywhere else by using the file manager in the virtual machine, or you can access the virtual machine via an SFTP client like `FileZilla` (host: 192.168.33.10, user: vagrant, password: vagrant) and copy if off from there.
+
+## Note about OS X performance
+If the OS X virtual machine feels slow and unresponsive, you can fix that by installing the [BeamOff](https://github.com/rtrouton/rtrouton_scripts/blob/master/rtrouton_scripts/fix_yosemite_vm_graphic_performance/installer/fix_yosemite_vm_graphic_performance.zip) tool.
