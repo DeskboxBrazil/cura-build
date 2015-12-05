@@ -2,30 +2,9 @@
 
 This repository contains build scripts used to build Cura and all depenencies from scratch.
 
-## OS X
+For every target platform, a Vagrantfile was created so the complete build process can be run inside of a virtual machine. This allows you to build for any target, no matter if you use Windows, OS X or Linux, and has the added benefit of keeping your computer clean because you avoid having to install lots of libraries and tools on it.
 
-1. Install CMake (available via [homebrew](http://brew.sh/) or [cmake.org](http://www.cmake.org/))
-2. Install latest version of Xcode.
-3. Run these commands:
-```shell
-git clone git@github.com:Ultimaker/cura-build.git
-cd cura-build
-mkdir build
-cd build
-cmake ..
-make
-```
-
-If you get an error on `Protobuf` compilation, add this to `build/Protobuf-prefix/src/Protobuf/CMakeLists.txt`:
-```cmake
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -undefined dynamic_lookup")
-endif()
-```
-
-If you get an error on `unittest_proto3_arena.proto`, replace `build/Protobuf-prefix/src/Protobuf/src/google/protobuf/unittest_proto3_arena.proto` and `build/Protobuf-python-prefix/src/Protobuf-python/src/google/protobuf/unittest_proto3_arena.proto` with [this one](https://raw.githubusercontent.com/google/protobuf/master/src/google/protobuf/unittest_proto3_arena.proto).
-
-
-## Ubuntu
-
-See [ubuntu-15.04-build-script.sh](ubuntu-15.04-build-script.sh) for building under Ubuntu 15.04.
+Look at the documentation for every target platform:
+* [OS X](osx/README.md)
+* Windows (to be written)
+* Linux (to be written)
