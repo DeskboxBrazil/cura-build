@@ -10,16 +10,10 @@ brew link --force gettext
 brew link --force homebrew/dupes/zlib
 brew link --force openssl
 brew link --force qt5
-brew cask update
-brew cask install sshfs
+
 # DMGBuild
 sudo easy_install pip
 sudo pip install dmgbuild
-
-# Mount points
-sudo mkdir -p /vagrant
-sudo chown vagrant /vagrant
-mkdir -p /Users/vagrant/build
 
 # Utilities (not needed to build)
 brew install ssh-copy-id
