@@ -1,6 +1,0 @@
-#!/bin/sh
-echo "Unmounting local $PWD as remote /vagrant"
-vagrant ssh --command "umount /vagrant"
-
-echo "Unmounting remote /Users/vagrant/build as local $PWD/build"
-fusermount -u $PWD/build
