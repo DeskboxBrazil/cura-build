@@ -1,6 +1,6 @@
 # cura-build
 
-This repository contains build scripts used to build Cura and all depenencies from scratch.
+This repository contains build scripts used to build Cura and all dependencies from scratch.
 
 **You'll probably want to build a specific release. There is a branch for every release, and the master branch is behind them. The current release for Deskbox is the [15.06](https://github.com/DeskboxBrazil/cura-build/tree/15.06) branch. So, it is recommended to work on it.**
 
