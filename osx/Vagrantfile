@@ -45,8 +45,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # 0,1,2,3,4,5 :: 640x480, 800x600, 1024x768, 1280x1024, 1440x900, 1920x1200
     vb.customize ["setextradata", :id, "VBoxInternal2/EfiGopMode", "2"]
 
-    # Provisioning
-	config.vm.provision "shell", privileged: false, path: "provision.sh"
   end
+
+  # Provisioning
+  config.vm.provision "shell", privileged: false, path: "provision.sh"
 
 end
