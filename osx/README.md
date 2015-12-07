@@ -15,7 +15,7 @@ cd osx
 vagrant up
 vagrant ssh
 ```
-3. The `vagrant up`, if this is the first time you execute it, will have to download, setup and start a virtual machine image that is several GBs big, so it will take a while, maybe hours depending on your internet connection. But the image will stay in a local cache, so the next time it will be much quicker. After it, the `vagrant ssh` command will take you inside the virtual machine that Vagrant started. In there run the following commands:
+3. The `vagrant up` command, if this is the first time you execute it, will have to download, setup and start a virtual machine image that is several GBs big, so it will take a while, maybe hours depending on your internet connection. But the image will stay in a local cache, so the next time it will be much quicker. After it, the `vagrant ssh` command will take you inside the virtual machine that Vagrant started. In there run the following commands:
 ```shell
 mkdir build
 cd build
@@ -25,19 +25,20 @@ make
 4. The build process will start. It will take a while (from 15 minutes to 2 hours depending on your hardware), so be patient.
 5. After build is complete, run:
 ```shell
-/vagrant/osx/fixes
+/vagrant/osx/fixes.sh
 ```
 6. Finally, to create the DMG package, run:
 ```shell
 dmgbuild -s /vagrant/osx/dmg/package.py Deskbox dist/Deskbox.dmg
 ```
-6. The installation package inside the virtual machine, in the `/Users/vagrant/build/dist` directory, with the name `Deskbox.dmg`. You can copy it anywhere else by using the file manager in the virtual machine, or you can access the virtual machine via an SFTP client like `FileZilla` (host: 192.168.33.10, user: vagrant, password: vagrant) and copy if off from there.
-7. When you're done with the build, you should stop the virtual machine to free up the RAM and CPU resouces it allocates. Do this with:
+7. The installation package inside the virtual machine, in the `/Users/vagrant/build/dist` directory, with the name `Deskbox.dmg`. You can copy it anywhere else by using the file manager in the virtual machine, or you can access the virtual machine via an SFTP client like `FileZilla` (host: 192.168.33.10, user: vagrant, password: vagrant) and copy if off from there.
+8. When you're done with the build, you should stop the virtual machine to free up the RAM and CPU resouces it allocates. Do this with:
 ```shell
 exit
 vagrant halt
 ```
-8. If are not planning to use this development environment anymore, or want to free disk space for other tasks, you can destroy the virtual machine with the command:
+9. Now that it is set up, you can restart your development environment at any time later by entering the `cura-build/osx` directory again and running the `vagrant up` command.
+10. If are not planning to use this development environment anymore, or want to free disk space for other tasks, you can destroy the virtual machine with the command:
 ```shell
 vagrant destroy
 ```
