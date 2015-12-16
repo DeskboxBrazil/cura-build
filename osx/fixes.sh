@@ -8,6 +8,7 @@ build_dir=$(pwd)
 echo 'Put translations in place.'
 
 # Cura
+cp -rv $build_dir/inst/share/cura/resources/firmware $build_dir/dist/Deskbox.app/Contents/Resources/cura/resources
 cp -rv $build_dir/inst/share/cura/resources/i18n $build_dir/dist/Deskbox.app/Contents/Resources/cura/resources
 # Build pt
 cd $build_dir/Cura-prefix/src/Cura/resources/i18n/pt
