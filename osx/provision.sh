@@ -15,5 +15,6 @@ brew link --force openssl
 brew link --force qt5
 
 # DMGBuild
-sudo easy_install pip
-sudo pip install dmgbuild
+# Let's use homebrew's python instead of OSX's python
+brew install python
+pip install dmgbuild
