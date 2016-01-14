@@ -1,3 +1,5 @@
+set(CMAKE_LEGACY_CYGWIN_WIN32 0)
+
 project(cura-build)
 
 cmake_minimum_required(VERSION 2.8.12)
@@ -9,18 +11,18 @@ if(APPLE)
    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.7")
 endif()
 
-option(BUILD_PYTHON "Include Python" ON)
-option(BUILD_QT "Include Qt" ON)
-option(BUILD_PYQT "Include PyQt" ON)
-option(BUILD_NUMPY "Include Numpy" ON)
-option(BUILD_PYSERIAL "Include PySerial" ON)
+option(BUILD_PYTHON "Include Python" OFF)
+option(BUILD_QT "Include Qt" OFF)
+option(BUILD_PYQT "Include PyQt" OFF)
+option(BUILD_NUMPY "Include Numpy" OFF)
+option(BUILD_PYSERIAL "Include PySerial" OFF)
 
-if(NOT APPLE AND NOT WIN32)
-    set(BUILD_PYTHON OFF)
-    set(BUILD_QT OFF)
-    set(BUILD_PYQT OFF)
-    set(BUILD_NUMPY OFF)
-    set(BUILD_PYSERIAL OFF)
+if(APPLE)
+    set(BUILD_PYTHON ON)
+    set(BUILD_QT ON)
+    set(BUILD_PYQT ON)
+    set(BUILD_NUMPY ON)
+    set(BUILD_PYSERIAL ON)
 endif()
 
 set(CURA_MAJOR_VERSION "15")
@@ -37,7 +39,6 @@ if(BUILD_PYTHON)
         CONFIGURE_COMMAND ./configure --prefix=${EXTERNALPROJECT_INSTALL_PREFIX} --enable-shared --with-threads --without-pymalloc
         BUILD_IN_SOURCE 1
     )
-
     set(PYTHON_EXECUTABLE ${EXTERNALPROJECT_INSTALL_PREFIX}/bin/python3)
 else()
     find_package(PythonInterp 3.0.0 REQUIRED)
@@ -111,7 +112,7 @@ ExternalProject_Add(Protobuf-python
 
 ExternalProject_Add(Arcus
     DEPENDS Python Protobuf
-    GIT_REPOSITORY https://github.com/ultimaker/libArcus
+    GIT_REPOSITORY https://github.com/DeskboxBrazil/libArcus
     GIT_TAG ${TAG_OR_BRANCH}
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=OFF -DBUILD_STATIC=ON
 )
@@ -153,10 +154,10 @@ if(APPLE)
         INSTALL_COMMAND ${PYTHON_EXECUTABLE} setup.py install
         BUILD_IN_SOURCE 1
     )
-elseif(WIN32)
-    ExternalProject_Add(Py2Exe
-        DEPENDS Python
-    )
+# elseif(WIN32)
+#     ExternalProject_Add(Py2Exe
+#         DEPENDS Python
+#     )
 endif()
 
 if(APPLE)
@@ -176,7 +177,8 @@ if(APPLE)
     set(CPACK_GENERATOR "DragNDrop")
 elseif(WIN32)
     set(CPACK_GENERATOR "NSIS")
-
+elseif(CYGWIN)
+    # Not yet decided - probably pyinstaller + NSIS
 else()
     set(CPACK_GENERATOR "DEB")
 
