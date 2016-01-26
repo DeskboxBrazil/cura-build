@@ -101,14 +101,14 @@ ExternalProject_Add(Protobuf
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=Release -DINSTALL_PYTHON=OFF -DBUILD_STATIC=ON
 )
 
-ExternalProject_Add(Protobuf-python
-    DEPENDS Python Protobuf
-    GIT_REPOSITORY https://github.com/ultimaker/protobuf
-    CONFIGURE_COMMAND wget https://bootstrap.pypa.io/ez_setup.py -O - | ${PYTHON_EXECUTABLE}
-    BUILD_COMMAND cd python && PROTOC=${EXTERNALPROJECT_INSTALL_PREFIX}/bin/protoc ${PYTHON_EXECUTABLE} setup.py build
-    INSTALL_COMMAND cd python && export PYTHONPATH=${EXTERNALPROJECT_SITEPACKAGES_DIR} && ${PYTHON_EXECUTABLE} setup.py install --single-version-externally-managed --prefix=${EXTERNALPROJECT_INSTALL_PREFIX} --record=${CMAKE_BINARY_DIR}/protobuf.log
-    BUILD_IN_SOURCE 1
-)
+#ExternalProject_Add(Protobuf-python
+#    DEPENDS Python Protobuf
+#    GIT_REPOSITORY https://github.com/ultimaker/protobuf
+#    #CONFIGURE_COMMAND wget https://bootstrap.pypa.io/ez_setup.py -O - | ${PYTHON_EXECUTABLE}
+#    BUILD_COMMAND cd python && PROTOC=${EXTERNALPROJECT_INSTALL_PREFIX}/bin/protoc ${PYTHON_EXECUTABLE} setup.py build
+#    INSTALL_COMMAND cd python && export PYTHONPATH=${EXTERNALPROJECT_SITEPACKAGES_DIR} && ${PYTHON_EXECUTABLE} setup.py install --single-version-externally-managed --prefix=${EXTERNALPROJECT_INSTALL_PREFIX} --record=${CMAKE_BINARY_DIR}/protobuf.log
+#    BUILD_IN_SOURCE 1
+#)
 
 ExternalProject_Add(Arcus
     DEPENDS Python Protobuf
@@ -176,6 +176,39 @@ if(APPLE)
 
     set(CPACK_GENERATOR "DragNDrop")
 elseif(WIN32)
+    get_filename_component(compiler_dir ${CMAKE_CXX_COMPILER} DIRECTORY)
+    configure_file(setup_win32.py.in setup_win32.py @ONLY)
+
+    add_custom_target(build_exe ALL)
+    add_dependencies(build_exe cura-binary-data)
+
+    add_custom_command(
+        TARGET build_exe PRE_LINK
+        COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/dist
+        COMMENT "Cleaning old dist/ directory"
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+    add_custom_command(
+        TARGET build_exe POST_BUILD
+        COMMAND ${PYTHON_EXECUTABLE} setup_win32.py py2exe
+        COMMENT "Running py2exe"
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/ DESTINATION "." USE_SOURCE_PERMISSIONS COMPONENT "cura")
+    # Get the VCRedist from http://www.microsoft.com/en-us/download/details.aspx?id=26999
+    if(BUILD_64BIT)
+        install(FILES vcredist_x64.exe DESTINATION "." COMPONENT "vcredist")
+    else()
+        install(FILES vcredist_x86.exe DESTINATION "." COMPONENT "vcredist")
+    endif()
+    install(DIRECTORY arduino DESTINATION "." COMPONENT "arduino")
+
+    include(CPackComponent)
+    cpack_add_component(cura DISPLAY_NAME "Cura Executable and Data Files" REQUIRED)
+    cpack_add_component(vcredist DISPLAY_NAME "Install Visual Studio 2010 Redistributable")
+    cpack_add_component(arduino DISPLAY_NAME "Install Arduino Drivers")
+
     set(CPACK_GENERATOR "NSIS")
 elseif(CYGWIN)
     # Not yet decided - probably pyinstaller + NSIS
