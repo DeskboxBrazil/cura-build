@@ -40,8 +40,10 @@ if(BUILD_PYTHON)
         BUILD_IN_SOURCE 1
     )
     set(PYTHON_EXECUTABLE ${EXTERNALPROJECT_INSTALL_PREFIX}/bin/python3)
+    set(PYTHON_LIBRARIES ${EXTERNALPROJECT_INSTALL_PREFIX}/lib)
 else()
     find_package(PythonInterp 3.0.0 REQUIRED)
+    find_package(PythonLibs 3.0.0 REQUIRED)
     add_custom_target(Python)
 endif()
 
@@ -160,7 +162,18 @@ if(APPLE)
 #     )
 endif()
 
+# Packaging
+
+set(CPACK_PACKAGE_NAME "Cura")
+set(CPACK_PACKAGE_VENDOR "Ultimaker")
+set(CPACK_PACKAGE_VERSION_MAJOR ${CURA_MAJOR_VERSION})
+set(CPACK_PACKAGE_VERSION_MINOR ${CURA_MINOR_VERSION})
+set(CPACK_PACKAGE_VERSION_PATCH ${CURA_PATCH_VERSION})
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Cura 3D Printing Software")
+set(CPACK_PACKAGE_CONTACT "Arjen Hiemstra <a.hiemstra@ultimaker.com>")
+
 if(APPLE)
+
     configure_file(setup_osx.py.in setup_osx.py @ONLY)
 
     add_custom_command(
@@ -175,7 +188,9 @@ if(APPLE)
     install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/Deskbox.app DESTINATION "." USE_SOURCE_PERMISSIONS)
 
     set(CPACK_GENERATOR "DragNDrop")
+
 elseif(WIN32)
+
     get_filename_component(compiler_dir ${CMAKE_CXX_COMPILER} DIRECTORY)
     configure_file(setup_win32.py.in setup_win32.py @ONLY)
 
@@ -198,9 +213,9 @@ elseif(WIN32)
     install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/ DESTINATION "." USE_SOURCE_PERMISSIONS COMPONENT "cura")
     # Get the VCRedist from http://www.microsoft.com/en-us/download/details.aspx?id=26999
     if(BUILD_64BIT)
-        install(FILES vcredist_x64.exe DESTINATION "." COMPONENT "vcredist")
+      install(FILES vcredist_x64.exe DESTINATION "." COMPONENT "vcredist")
     else()
-        install(FILES vcredist_x86.exe DESTINATION "." COMPONENT "vcredist")
+      install(FILES vcredist_x86.exe DESTINATION "." COMPONENT "vcredist")
     endif()
     install(DIRECTORY arduino DESTINATION "." COMPONENT "arduino")
 
@@ -210,8 +225,13 @@ elseif(WIN32)
     cpack_add_component(arduino DISPLAY_NAME "Install Arduino Drivers")
 
     set(CPACK_GENERATOR "NSIS")
+    set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
+    set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
+    set(CPACK_NSIS_MUI_FINISHPAGE_RUN "Cura.exe")
+
 elseif(CYGWIN)
     # Not yet decided - probably pyinstaller + NSIS
+
 else()
     set(CPACK_GENERATOR "DEB")
 
@@ -225,42 +245,35 @@ else()
         "${CMAKE_BINARY_DIR}/inst/lib/python3.4/site-packages/google;/usr/lib/python3/dist-packages/google"
         "${CMAKE_BINARY_DIR}/inst/lib/python3/dist-packages/Arcus;/usr/lib/python3/dist-packages/Arcus"
     )
+
+    set(RPM_REQUIRES
+        "python3 >= 3.4.0"
+        "python3-qt5 >= 5.4.0"
+        "python3-numpy >= 1.9.0"
+        "qt5-qtquickcontrols >= 5.4.0"
+    )
+    string(REPLACE ";" "," RPM_REQUIRES "${RPM_REQUIRES}")
+    set(CPACK_RPM_PACKAGE_REQUIRES ${RPM_REQUIRES})
+    set(CPACK_RPM_PACKAGE_RELOCATABLE OFF)
+
+    set(DEB_DEPENDS
+        "python3 (>= 3.4.0)"
+        "python3-pyqt5 (>= 5.4.0)"
+        "python3-pyqt5.qtopengl (>= 5.4.0)"
+        "python3-pyqt5.qtquick (>= 5.4.0)"
+        "python3-pyqt5.qtsvg (>= 5.4.0)"
+        "python3-numpy (>= 1.8.0)"
+        "python3-serial (>= 2.6)"
+        "qml-module-qtquick2 (>= 5.4.0)"
+        "qml-module-qtquick-window2 (>= 5.4.0)"
+        "qml-module-qtquick-layouts (>= 5.4.0)"
+        "qml-module-qtquick-dialogs (>= 5.4.0)"
+        "qml-module-qtquick-controls (>= 5.4.0)"
+    )
+    string(REPLACE ";" "," DEB_DEPENDS "${DEB_DEPENDS}")
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS ${DEB_DEPENDS})
+    set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
+
 endif()
-
-set(CPACK_PACKAGE_NAME "Cura")
-set(CPACK_PACKAGE_VENDOR "Ultimaker")
-set(CPACK_PACKAGE_VERSION_MAJOR ${CURA_MAJOR_VERSION})
-set(CPACK_PACKAGE_VERSION_MINOR ${CURA_MINOR_VERSION})
-set(CPACK_PACKAGE_VERSION_PATCH ${CURA_PATCH_VERSION})
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Cura 3D Printing Software")
-set(CPACK_PACKAGE_CONTACT "Arjen Hiemstra <a.hiemstra@ultimaker.com>")
-
-set(RPM_REQUIRES
-    "python3 >= 3.4.0"
-    "python3-qt5 >= 5.4.0"
-    "python3-numpy >= 1.9.0"
-    "qt5-qtquickcontrols >= 5.4.0"
-)
-string(REPLACE ";" "," RPM_REQUIRES "${RPM_REQUIRES}")
-set(CPACK_RPM_PACKAGE_REQUIRES ${RPM_REQUIRES})
-set(CPACK_RPM_PACKAGE_RELOCATABLE OFF)
-
-set(DEB_DEPENDS
-    "python3 (>= 3.4.0)"
-    "python3-pyqt5 (>= 5.4.0)"
-    "python3-pyqt5.qtopengl (>= 5.4.0)"
-    "python3-pyqt5.qtquick (>= 5.4.0)"
-    "python3-pyqt5.qtsvg (>= 5.4.0)"
-    "python3-numpy (>= 1.8.0)"
-    "python3-serial (>= 2.6)"
-    "qml-module-qtquick2 (>= 5.4.0)"
-    "qml-module-qtquick-window2 (>= 5.4.0)"
-    "qml-module-qtquick-layouts (>= 5.4.0)"
-    "qml-module-qtquick-dialogs (>= 5.4.0)"
-    "qml-module-qtquick-controls (>= 5.4.0)"
-)
-string(REPLACE ";" "," DEB_DEPENDS "${DEB_DEPENDS}")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS ${DEB_DEPENDS})
-set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
 
 include(CPack)

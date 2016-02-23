@@ -3,9 +3,7 @@ Follow the instructions below to build the Windows package:
 
 1. Install the following applications in your computer, by downloading them or via a package manager if your operating system has one:
     * [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-    * [Vagrant](https://www.vagrantup.com/downloads.html)
     * [Git](https://git-scm.com/downloads)
-    * [RSync](https://rsync.samba.org/download.html)
 2. Open a terminal/command/console window and run the following commands, one at a time:
 ```shell
 git clone https://github.com/DeskboxBrazil/cura-build.git
@@ -15,47 +13,78 @@ cd osx
 vagrant up
 vagrant ssh
 ```
-3. The `vagrant up` command, if this is the first time you execute it, will have to download, setup and start a virtual machine image that is several GBs big, so it will take a while, maybe hours depending on your internet connection. But the image will stay in a local cache, so the next time it will be much quicker. After it, the `vagrant ssh` command will take you inside the virtual machine that Vagrant started. In there run the following commands:
-```shell
-mkdir build
-cd build
-cmake /vagrant
-make
+3. Download a Windows 7 virtual machine from modernie.com, import it into VirtualBox and configure it with the settings below:  
+    **Display**
+    - Video Memory: 64 MB
+    - [X] Enable 3D Acceleration
+    - [X] Enable 2D Video Acceleration
+4. On your new virtual machine, install the tools detailed below.
+
+
+Tools
+-----
+You need to install the following dependencies to be able to build the application.  
+Please take care of following the installation notes for every one of them:
+
+* MingW GCC <http://ufpr.dl.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/installer/mingw-w64-install.exe>
+	* Architecture: i686
+	* Threads: posix
+	* Install on C:\mingw-w64
+* Qt 5.4 <http://download.qt.io/archive/qt/5.4/5.4.2/qt-opensource-windows-x86-mingw491_opengl-5.4.2.exe>
+	* Install on C:\Qt
+* Python 3.4.4 <https://www.python.org/ftp/python/3.4.4/python-3.4.4.msi>
+	* Enable the option: Add python.exe to Path
+	* Install on C:\Python34
+	* After installation:
+		* Open a Windows Command Prompt and execute:
+			* pip install pyserial
+			* pip install py2exe
+			* pip install protobuf==3.0.0b2
+				* ``echo # > C:\Python34\Lib\site-packages\google\__init__.py`` (this is necessary for py2exe to correctly detect this package)
+		* Download <http://www.lfd.uci.edu/%7Egohlke/pythonlibs/wkvprmqy/numpy-1.10.4+mkl-cp34-none-win32.whl>
+			* Open a Windows Command Prompt and execute:
+				* cd Downloads
+				* pip install numpy-1.10.4+mkl-cp34-none-win32.whl
+* PyQt 5.4 <http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.4.2/PyQt5-5.4.2-gpl-Py3.4-Qt5.4.2-x32.exe/download>
+* CMake <https://cmake.org/files/v3.4/cmake-3.4.1-win32-x86.exe>
+	* Select: Add Cmake to the system PATH for all users
+	* Install on C:\CMake
+* Make <http://sourceforge.net/projects/gnuwin32/files/make/3.81/make-3.81.exe/download>
+	* Install on C:\GnuWin32
+* Gettext <https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-static-32.exe>
+	* Install on C:\gettext
+* Wget <http://downloads.sourceforge.net/gnuwin32/wget-1.11.4-1-setup.exe>
+	* Install on C:\GnuWin32
+* Doxygen <http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.11-setup.exe>
+	* Install on C:\doxygen
+* Git <https://github.com/git-for-windows/git/releases/download/v2.7.0.windows.1/Git-2.7.0-32-bit.exe>
+	* Install on C:\Git
+	* Select: Use Git from the Windows Command Prompt
+	* Select: Use Windows ' default console window
+* NSIS <http://downloads.sourceforge.net/project/nsis/NSIS%203%20Pre-release/3.0b3/nsis-3.0b3-setup.exe?r=http%3A%2F%2Fnsis.sourceforge.net%2FDownload&ts=1452876911&use_mirror=ufpr>
+	* Install on C:\NSIS
+
+
+Build
+-----
 ```
-4. The build process will start. It will take a while (from 15 minutes to 2 hours depending on your hardware), so be patient.
-5. After build is complete, run:
-```shell
-/vagrant/osx/fixes.sh
-```
-6. Finally, to create the DMG package, run:
-```shell
-dmgbuild -s /vagrant/osx/dmg/package.py Deskbox dist/Deskbox.dmg
-```
-7. The installation package inside the virtual machine, in the `/Users/vagrant/build/dist` directory, with the name `Deskbox.dmg`. You can copy it anywhere else by using the file manager in the virtual machine, or you can access the virtual machine via an SFTP client like `FileZilla` (host: 192.168.33.10, user: vagrant, password: vagrant) and copy if off from there.
-8. When you're done with the build, you should stop the virtual machine to free up the RAM and CPU resouces it allocates. Do this with:
-```shell
-exit
-vagrant halt
-```
-9. Now that it is set up, you can restart your development environment at any time later by entering the `cura-build/osx` directory again and running the `vagrant up` command.
-10. If are not planning to use this development environment anymore, or want to free disk space for other tasks, you can destroy the virtual machine with the command:
-```shell
-vagrant destroy
+cd %HOME%
+git clone <https://github.com/DeskboxBrazil/cura-build.git>
+cd cura-build
+
+set PATH=C:\Python34\Lib\site-packages\PyQt5;C:\Python34\;C:\Python34\Scripts;C:\Windows\system32;C:\Windows;C:\CMake\bin;C:\Git\cmd;C:\GnuWin32\bin;C:\mingw-w64\mingw32\bin;C:\doxygen;C:\gettext
+set Qt5_DIR=C:\Qt\Qt5.4.2\5.4\mingw491_32
+set Qt5LinguistTools_DIR=C:\Qt\Qt5.4.2\5.4\mingw491_32\lib\cmake\Qt5LinguistTools
+
+mkdir build && cd build && cmake -G "Unix Makefiles" .. && make
 ```
 
-## Troubleshooting
-
-### HTTP server doesn't seem to support byte ranges
-This error can arise in the `vagrant up` command:
+## Test
 ```
-An error occurred while downloading the remote file. The error
-message, if any, is reproduced below. Please fix this error and try
-again.
-
-HTTP server doesn't seem to support byte ranges. Cannot resume.
+set PATH=%PATH%;C:\mingw-w64\mingw32\bin
+set PYTHONPATH=%CD%\inst\lib\python3.4\site-packages
+set Qt5_DIR=C:\Python34\Lib\site-packages\PyQt5
+set QT_QPA_PLATFORM_PLUGIN_PATH=C:\Python34\Lib\site-packages\PyQt5\plugins\platforms
+set QML2_IMPORT_PATH=C:\Python34\Lib\site-packages\PyQt5\qml
+python inst\bin\cura_app.py
 ```
-If this happens, copy the URL shown above the error message (at the time of this writing is `https://atlas.hashicorp.com/AndrewDryga/boxes/vagrant-box-osx/versions/0.2.1/providers/virtualbox.box` but that could change) and paste it into the address bar of your web browser, so you download the file. After that, open a terminal in that directory and run the command:
-```shell
-vagrant box add 'AndrewDryga/vagrant-box-osx' virtualbox.box
-```
-(Change `virtualbox.box` to the name of the file you downloaded, if it's different). This will manually install the box in your computer. Then, you can run `vagrant up` again and it will skip the download step, going on with the rest of the process.
