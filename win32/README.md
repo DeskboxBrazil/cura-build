@@ -4,21 +4,29 @@ Follow the instructions below to build the Windows package:
 1. Install the following applications in your computer, by downloading them or via a package manager if your operating system has one:
     * [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
     * [Git](https://git-scm.com/downloads)
+
 2. Open a terminal/command/console window and run the following commands, one at a time:
 ```shell
 git clone https://github.com/DeskboxBrazil/cura-build.git
 cd cura-build
 git checkout 15.06
-cd osx
-vagrant up
-vagrant ssh
 ```
+
 3. Download a Windows 7 virtual machine from modernie.com, import it into VirtualBox and configure it with the settings below:  
-    **Display**
-    - Video Memory: 64 MB
-    - [X] Enable 3D Acceleration
-    - [X] Enable 2D Video Acceleration
-4. On your new virtual machine, install the tools detailed below.
+    - **Display**
+        - Video Memory: 64 MB
+        - [X] Enable 3D Acceleration
+        - [X] Enable 2D Video Acceleration  
+    - **Shared Folders > Add Share**  
+        - Folder Path: <cura-build folder>
+        - Folder Name: cura-build
+        - [X] Read-only
+        - [X] Auto-mount
+        - [X] Make Permanent
+
+4. On your new virtual machine, give the shared folder you just created the drive letter **Z:**
+
+5. On your new virtual machine, install the tools detailed below.
 
 
 Tools
@@ -67,19 +75,18 @@ Please take care of following the installation notes for every one of them:
 
 Build
 -----
+In the Windows virtual machine, open a command prompt and run the commands:
 ```
-cd %HOME%
-git clone <https://github.com/DeskboxBrazil/cura-build.git>
-cd cura-build
-
 set PATH=C:\Python34\Lib\site-packages\PyQt5;C:\Python34\;C:\Python34\Scripts;C:\Windows\system32;C:\Windows;C:\CMake\bin;C:\Git\cmd;C:\GnuWin32\bin;C:\mingw-w64\mingw32\bin;C:\doxygen;C:\gettext
 set Qt5_DIR=C:\Qt\Qt5.4.2\5.4\mingw491_32
 set Qt5LinguistTools_DIR=C:\Qt\Qt5.4.2\5.4\mingw491_32\lib\cmake\Qt5LinguistTools
-
-mkdir build && cd build && cmake -G "Unix Makefiles" .. && make
+mkdir build && cd build
+cmake -G "Unix Makefiles" Z:\
+make
 ```
 
 ## Test
+You can check if the build is running with the following commands (in the build folder):
 ```
 set PATH=%PATH%;C:\mingw-w64\mingw32\bin
 set PYTHONPATH=%CD%\inst\lib\python3.4\site-packages
@@ -88,3 +95,17 @@ set QT_QPA_PLATFORM_PLUGIN_PATH=C:\Python34\Lib\site-packages\PyQt5\plugins\plat
 set QML2_IMPORT_PATH=C:\Python34\Lib\site-packages\PyQt5\qml
 python inst\bin\cura_app.py
 ```
+
+## Troubleshooting
+
+### When running, the add printer wizard opens but the main screen doesn't and the application freezes
+Depending on your host operating system, VirtualBox and Guest Tools versions, it can happen than the graphics driver in the virtual machine doesn't support the full OpenGL specification that Cura uses extensively. So in these cases, to fully test the application you'll have to run it on a physical Windows machine.
+
+### The splash screen shows but then the application exits silently, or nothing shows at all when running it
+You'll have to debug the application start to discover what is going wrong. By default it compiles as a Windows executable and does not show any console output, but you can temporarily change the configuration to generate a console executable where all the Python output will be readable.  
+Open the `setup_win32.py.in` file in the `cura-build` folder and look for the lines below (around line 80), making the following edit:
+```python
+#windows=[{"script": "inst/bin/cura_app.py", "dest_name": "Cura", "icon_resources": [(1, "@CMAKE_SOURCE_DIR@/cura.ico")]}], # Uncomment in production
+console=[{"script": "inst/bin/cura_app.py", "dest_name": "Cura"}], # Comment in production
+```
+Then build everything again and when running Cura from the command prompt you'll have an error message stating what went wrong. After fixing the problem, revert this change.
