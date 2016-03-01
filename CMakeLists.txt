@@ -165,12 +165,12 @@ endif()
 # Packaging
 
 set(CPACK_PACKAGE_NAME "Cura")
-set(CPACK_PACKAGE_VENDOR "Ultimaker")
+set(CPACK_PACKAGE_VENDOR "Deskbox")
 set(CPACK_PACKAGE_VERSION_MAJOR ${CURA_MAJOR_VERSION})
 set(CPACK_PACKAGE_VERSION_MINOR ${CURA_MINOR_VERSION})
 set(CPACK_PACKAGE_VERSION_PATCH ${CURA_PATCH_VERSION})
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Cura 3D Printing Software")
-set(CPACK_PACKAGE_CONTACT "Arjen Hiemstra <a.hiemstra@ultimaker.com>")
+set(CPACK_PACKAGE_CONTACT "Martin Elsner <martin.elsner@gmail.com>")
 
 if(APPLE)
 
@@ -211,6 +211,7 @@ elseif(WIN32)
     )
 
     install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/ DESTINATION "." USE_SOURCE_PERMISSIONS COMPONENT "cura")
+
     # Get the VCRedist from http://www.microsoft.com/en-us/download/details.aspx?id=26999
     if(BUILD_64BIT)
       install(FILES vcredist_x64.exe DESTINATION "." COMPONENT "vcredist")

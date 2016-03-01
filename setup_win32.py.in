@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from distutils.core import setup
+from glob import iglob
 import py2exe
 import UM
 import UM.Qt
@@ -78,8 +79,8 @@ setup(
     url="http://software.ultimaker.com/",
     license="GNU AFFERO GENERAL PUBLIC LICENSE (AGPL)",
     scripts=["inst/bin/cura_app.py"],
-    windows=[{"script": "inst/bin/cura_app.py", "dest_name": "Cura", "icon_resources": [(1, "@CMAKE_SOURCE_DIR@/cura.ico")]}], # Uncomment in production
-    #console=[{"script": "inst/bin/cura_app.py", "dest_name": "Cura"}], # Comment in production
+    #windows=[{"script": "inst/bin/cura_app.py", "dest_name": "Cura", "icon_resources": [(1, "@CMAKE_SOURCE_DIR@/cura.ico")]}], # Uncomment in production
+    console=[{"script": "inst/bin/cura_app.py", "dest_name": "Cura"}], # Comment in production
     options={"py2exe": {"skip_archive": False, "includes": includes}}
 )
 
@@ -121,10 +122,8 @@ except FileNotFoundError:
     shutil.copy("@compiler_dir@/libgcc_s_dw2-1.dll", "dist/libgcc_s_dw2-1.dll")
 
 print("Copying NumPy DLLs")
-python_lib_dir = os.path.join(os.path.dirname(os.path.dirname("@PYTHON_LIBRARIES@")), 'lib')
-shutil.copy(os.path.join(python_lib_dir, "site-packages/numpy/core/libiomp5md.dll"), "dist/libiomp5md.dll")
-shutil.copy(os.path.join(python_lib_dir, "site-packages/numpy/core/mkl_avx.dll"), "dist/mkl_avx.dll")
-shutil.copy(os.path.join(python_lib_dir, "site-packages/numpy/core/mkl_core.dll"), "dist/mkl_core.dll")
-shutil.copy(os.path.join(python_lib_dir, "site-packages/numpy/core/mkl_intel_thread.dll"), "dist/mkl_intel_thread.dll")
+numpy_core_glob = os.path.join(os.path.dirname(os.path.dirname("@PYTHON_LIBRARIES@")), 'lib/site-packages/numpy/core/*.dll')
+for fname in iglob(numpy_core_glob):
+    shutil.copy(fname, 'dist')
 
 os.rename("dist/cura_app.exe", "dist/Cura.exe")
