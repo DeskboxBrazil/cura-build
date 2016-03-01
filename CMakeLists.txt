@@ -169,8 +169,15 @@ set(CPACK_PACKAGE_VENDOR "Deskbox")
 set(CPACK_PACKAGE_VERSION_MAJOR ${CURA_MAJOR_VERSION})
 set(CPACK_PACKAGE_VERSION_MINOR ${CURA_MINOR_VERSION})
 set(CPACK_PACKAGE_VERSION_PATCH ${CURA_PATCH_VERSION})
+set(CPACK_PACKAGE_VERSION ${CURA_VERSION})
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Cura 3D Printing Software")
 set(CPACK_PACKAGE_CONTACT "Martin Elsner <martin.elsner@gmail.com>")
+if(NOT APPLE)
+    set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
+endif()
+set(CPACK_PACKAGE_EXECUTABLES Cura "Cura ${CURA_MAJOR_VERSION}.${CURA_MINOR_VERSION}.${CURA_PATCH_VERSION}")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "Cura ${CURA_MAJOR_VERSION}.${CURA_MINOR_VERSION}")
+set(CPACK_MODULE_PATH ${CPACK_MODULE_PATH} ${CMAKE_SOURCE_DIR})
 
 if(APPLE)
 
@@ -212,17 +219,10 @@ elseif(WIN32)
 
     install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/ DESTINATION "." USE_SOURCE_PERMISSIONS COMPONENT "cura")
 
-    # Get the VCRedist from http://www.microsoft.com/en-us/download/details.aspx?id=26999
-    if(BUILD_64BIT)
-      install(FILES vcredist_x64.exe DESTINATION "." COMPONENT "vcredist")
-    else()
-      install(FILES vcredist_x86.exe DESTINATION "." COMPONENT "vcredist")
-    endif()
     install(DIRECTORY arduino DESTINATION "." COMPONENT "arduino")
 
     include(CPackComponent)
     cpack_add_component(cura DISPLAY_NAME "Cura Executable and Data Files" REQUIRED)
-    cpack_add_component(vcredist DISPLAY_NAME "Install Visual Studio 2010 Redistributable")
     cpack_add_component(arduino DISPLAY_NAME "Install Arduino Drivers")
 
     set(CPACK_GENERATOR "NSIS")

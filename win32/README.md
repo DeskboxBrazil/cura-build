@@ -76,8 +76,9 @@ Please take care of following the installation notes for every one of them:
 Build
 -----
 In the Windows virtual machine, open a command prompt and run the commands:
-```
+```bat
 set PATH=C:\Python34\Lib\site-packages\PyQt5;C:\Python34\;C:\Python34\Scripts;C:\Windows\system32;C:\Windows;C:\CMake\bin;C:\Git\cmd;C:\GnuWin32\bin;C:\mingw-w64\mingw32\bin;C:\doxygen;C:\gettext
+set PYTHONPATH=%CD%\inst\lib\python3.4\site-packages
 set Qt5_DIR=C:\Qt\Qt5.4.2\5.4\mingw491_32
 set Qt5LinguistTools_DIR=C:\Qt\Qt5.4.2\5.4\mingw491_32\lib\cmake\Qt5LinguistTools
 mkdir build && cd build
@@ -87,7 +88,7 @@ make
 
 ## Test
 You can check if the build is running with the following commands (in the build folder):
-```
+```bat
 set PATH=%PATH%;C:\mingw-w64\mingw32\bin
 set PYTHONPATH=%CD%\inst\lib\python3.4\site-packages
 set Qt5_DIR=C:\Python34\Lib\site-packages\PyQt5
