@@ -12,5 +12,5 @@ set QML2_IMPORT_PATH=C:\Python34\Lib\site-packages\PyQt5\qml
 
 mkdir build
 cd build
-cmake -G "Unix Makefiles" ..
+cmake -G "Unix Makefiles" Z:\
 make

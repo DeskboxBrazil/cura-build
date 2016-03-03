@@ -103,14 +103,16 @@ ExternalProject_Add(Protobuf
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=Release -DINSTALL_PYTHON=OFF -DBUILD_STATIC=ON
 )
 
-#ExternalProject_Add(Protobuf-python
-#    DEPENDS Python Protobuf
-#    GIT_REPOSITORY https://github.com/ultimaker/protobuf
-#    #CONFIGURE_COMMAND wget https://bootstrap.pypa.io/ez_setup.py -O - | ${PYTHON_EXECUTABLE}
-#    BUILD_COMMAND cd python && PROTOC=${EXTERNALPROJECT_INSTALL_PREFIX}/bin/protoc ${PYTHON_EXECUTABLE} setup.py build
-#    INSTALL_COMMAND cd python && export PYTHONPATH=${EXTERNALPROJECT_SITEPACKAGES_DIR} && ${PYTHON_EXECUTABLE} setup.py install --single-version-externally-managed --prefix=${EXTERNALPROJECT_INSTALL_PREFIX} --record=${CMAKE_BINARY_DIR}/protobuf.log
-#    BUILD_IN_SOURCE 1
-#)
+if(NOT WIN32)
+    ExternalProject_Add(Protobuf-python
+       DEPENDS Python Protobuf
+       GIT_REPOSITORY https://github.com/ultimaker/protobuf
+       #CONFIGURE_COMMAND wget https://bootstrap.pypa.io/ez_setup.py -O - | ${PYTHON_EXECUTABLE}
+       BUILD_COMMAND cd python && PROTOC=${EXTERNALPROJECT_INSTALL_PREFIX}/bin/protoc ${PYTHON_EXECUTABLE} setup.py build
+       INSTALL_COMMAND cd python && export PYTHONPATH=${EXTERNALPROJECT_SITEPACKAGES_DIR} && ${PYTHON_EXECUTABLE} setup.py install --single-version-externally-managed --prefix=${EXTERNALPROJECT_INSTALL_PREFIX} --record=${CMAKE_BINARY_DIR}/protobuf.log
+       BUILD_IN_SOURCE 1
+    )
+endif()
 
 ExternalProject_Add(Arcus
     DEPENDS Python Protobuf
@@ -156,10 +158,6 @@ if(APPLE)
         INSTALL_COMMAND ${PYTHON_EXECUTABLE} setup.py install
         BUILD_IN_SOURCE 1
     )
-# elseif(WIN32)
-#     ExternalProject_Add(Py2Exe
-#         DEPENDS Python
-#     )
 endif()
 
 # Packaging
@@ -178,6 +176,7 @@ endif()
 set(CPACK_PACKAGE_EXECUTABLES Cura "Cura ${CURA_MAJOR_VERSION}.${CURA_MINOR_VERSION}.${CURA_PATCH_VERSION}")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "Cura ${CURA_MAJOR_VERSION}.${CURA_MINOR_VERSION}")
 set(CPACK_MODULE_PATH ${CPACK_MODULE_PATH} ${CMAKE_SOURCE_DIR})
+set(CPACK_PACKAGE_FILE_NAME "CuraDeskbox")
 
 if(APPLE)
 
