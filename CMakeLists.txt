@@ -137,9 +137,10 @@ ExternalProject_Add(Uranium
 
 ExternalProject_Add(Cura
     DEPENDS Uranium CuraEngine
-    GIT_REPOSITORY https://github.com/DeskboxBrazil/Cura
-    GIT_TAG ${TAG_OR_BRANCH}
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX} -DURANIUM_SCRIPTS_DIR=
+    # GIT_REPOSITORY https://github.com/DeskboxBrazil/Cura
+    # GIT_TAG ${TAG_OR_BRANCH}
+    URL F:/programming/deskbox/Cura
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX}
 )
 
 ExternalProject_Add(cura-binary-data

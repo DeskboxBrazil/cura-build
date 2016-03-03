@@ -12,7 +12,11 @@ cd cura-build
 git checkout 15.06
 ```
 
-3. Download a Windows 7 virtual machine from modernie.com, import it into VirtualBox and configure it with the settings below:  
+3. Download a Windows 7 virtual machine from the [Microsoft Developer Technologies](https://dev.windows.com/en-us/microsoft-edge/tools/vms) web site. Choose your OS and select:
+    - Virtual Machine: **IE11 on Win7**
+    - Select Platform: **VirtualBox**
+
+4. After downloading your VM, import it into VirtualBox and configure it with the settings below:  
     - **Display**
         - Video Memory: 64 MB
         - [X] Enable 3D Acceleration
@@ -24,9 +28,9 @@ git checkout 15.06
         - [X] Auto-mount
         - [X] Make Permanent
 
-4. On your new virtual machine, give the shared folder you just created the drive letter **Z:**
+5. On your new virtual machine, give the shared folder you just created the drive letter **Z:**
 
-5. On your new virtual machine, install the tools detailed below.
+6. On your new virtual machine, install the tools detailed below.
 
 
 Tools
@@ -77,24 +81,15 @@ Build
 -----
 In the Windows virtual machine, open a command prompt and run the commands:
 ```bat
-set PATH=C:\Python34\Lib\site-packages\PyQt5;C:\Python34\;C:\Python34\Scripts;C:\Windows\system32;C:\Windows;C:\CMake\bin;C:\Git\cmd;C:\GnuWin32\bin;C:\mingw-w64\mingw32\bin;C:\doxygen;C:\gettext
-set PYTHONPATH=%CD%\inst\lib\python3.4\site-packages
-set Qt5_DIR=C:\Qt\Qt5.4.2\5.4\mingw491_32
-set Qt5LinguistTools_DIR=C:\Qt\Qt5.4.2\5.4\mingw491_32\lib\cmake\Qt5LinguistTools
-mkdir build && cd build
-cmake -G "Unix Makefiles" Z:\
-make
+mkdir build
+cd build
+Z:\win32\build.bat
 ```
 
 ## Test
-You can check if the build is running with the following commands (in the build folder):
+You can check if the build is running with the following commands (in the `build` folder):
 ```bat
-set PATH=%PATH%;C:\mingw-w64\mingw32\bin
-set PYTHONPATH=%CD%\inst\lib\python3.4\site-packages
-set Qt5_DIR=C:\Python34\Lib\site-packages\PyQt5
-set QT_QPA_PLATFORM_PLUGIN_PATH=C:\Python34\Lib\site-packages\PyQt5\plugins\platforms
-set QML2_IMPORT_PATH=C:\Python34\Lib\site-packages\PyQt5\qml
-python inst\bin\cura_app.py
+Z:\win32\test.bat
 ```
 
 ## Troubleshooting
