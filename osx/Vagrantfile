@@ -19,7 +19,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = false
 
   config.vm.synced_folder "..", "/vagrant", type: "rsync", rsync__exclude: ".*"
-  #config.vm.synced_folder "..", "/vagrant", :nfs => { :mount_options => ["dmode=777","fmode=777"] }
+  config.vm.synced_folder "../..", "/deskbox", type: "rsync", rsync__exclude: ".*"
 
   config.vm.provider "virtualbox" do |vb|
     # Do/don't boot with headless mode

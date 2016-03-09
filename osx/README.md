@@ -23,22 +23,18 @@ cmake /vagrant
 make
 ```
 4. The build process will start. It will take a while (from 15 minutes to 2 hours depending on your hardware), so be patient.
-5. After build is complete, run:
-```shell
-/vagrant/osx/fixes.sh
-```
-6. Finally, to create the DMG package, run:
+5. Finally, to create the DMG package, run:
 ```shell
 dmgbuild -s /vagrant/osx/dmg/package.py Deskbox dist/Deskbox.dmg
 ```
-7. The installation package inside the virtual machine, in the `/Users/vagrant/build/dist` directory, with the name `Deskbox.dmg`. You can copy it anywhere else by using the file manager in the virtual machine, or you can access the virtual machine via an SFTP client like `FileZilla` (host: 192.168.33.10, user: vagrant, password: vagrant) and copy if off from there.
-8. When you're done with the build, you should stop the virtual machine to free up the RAM and CPU resouces it allocates. Do this with:
+6. The installation package inside the virtual machine, in the `/Users/vagrant/build/dist` directory, with the name `Deskbox.dmg`. You can copy it anywhere else by using the file manager in the virtual machine, or you can access the virtual machine via an SFTP client like `FileZilla` (host: 192.168.33.10, user: vagrant, password: vagrant) and copy if off from there.
+7. When you're done with the build, you should stop the virtual machine to free up the RAM and CPU resouces it allocates. Do this with:
 ```shell
 exit
 vagrant halt
 ```
-9. Now that it is set up, you can restart your development environment at any time later by entering the `cura-build/osx` directory again and running the `vagrant up` command.
-10. If are not planning to use this development environment anymore, or want to free disk space for other tasks, you can destroy the virtual machine with the command:
+8. Now that it is set up, you can restart your development environment at any time later by entering the `cura-build/osx` directory again and running the `vagrant up` command.
+9. If are not planning to use this development environment anymore, or want to free disk space for other tasks, you can destroy the virtual machine with the command:
 ```shell
 vagrant destroy
 ```

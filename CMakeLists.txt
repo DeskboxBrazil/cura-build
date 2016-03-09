@@ -107,7 +107,7 @@ if(NOT WIN32)
     ExternalProject_Add(Protobuf-python
        DEPENDS Python Protobuf
        GIT_REPOSITORY https://github.com/ultimaker/protobuf
-       #CONFIGURE_COMMAND wget https://bootstrap.pypa.io/ez_setup.py -O - | ${PYTHON_EXECUTABLE}
+       CONFIGURE_COMMAND ""
        BUILD_COMMAND cd python && PROTOC=${EXTERNALPROJECT_INSTALL_PREFIX}/bin/protoc ${PYTHON_EXECUTABLE} setup.py build
        INSTALL_COMMAND cd python && export PYTHONPATH=${EXTERNALPROJECT_SITEPACKAGES_DIR} && ${PYTHON_EXECUTABLE} setup.py install --single-version-externally-managed --prefix=${EXTERNALPROJECT_INSTALL_PREFIX} --record=${CMAKE_BINARY_DIR}/protobuf.log
        BUILD_IN_SOURCE 1
@@ -132,14 +132,17 @@ ExternalProject_Add(Uranium
     DEPENDS PyQt Arcus
     GIT_REPOSITORY https://github.com/DeskboxBrazil/Uranium
     GIT_TAG ${TAG_OR_BRANCH}
+    # URL /deskbox/Uranium
+    # URL F:/programming/deskbox/Uranium
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX}
 )
 
 ExternalProject_Add(Cura
     DEPENDS Uranium CuraEngine
-    # GIT_REPOSITORY https://github.com/DeskboxBrazil/Cura
-    # GIT_TAG ${TAG_OR_BRANCH}
-    URL F:/programming/deskbox/Cura
+    GIT_REPOSITORY https://github.com/DeskboxBrazil/Cura
+    GIT_TAG ${TAG_OR_BRANCH}
+    # URL /deskbox/Cura
+    # URL F:/programming/deskbox/Cura
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX}
 )
 
@@ -154,7 +157,7 @@ if(APPLE)
     ExternalProject_Add(Py2App
         DEPENDS Python
         URL https://pypi.python.org/packages/source/p/py2app/py2app-0.9.tar.gz
-        CONFIGURE_COMMAND wget https://bootstrap.pypa.io/ez_setup.py -O - | ${PYTHON_EXECUTABLE}
+        CONFIGURE_COMMAND ""
         BUILD_COMMAND ${PYTHON_EXECUTABLE} setup.py build
         INSTALL_COMMAND ${PYTHON_EXECUTABLE} setup.py install
         BUILD_IN_SOURCE 1
@@ -184,15 +187,15 @@ if(APPLE)
     configure_file(setup_osx.py.in setup_osx.py @ONLY)
 
     add_custom_command(
-        OUTPUT ${CMAKE_BINARY_DIR}/dist/Deskbox.app
+        OUTPUT ${CMAKE_BINARY_DIR}/dist/CuraDeskbox.app
         COMMAND ${PYTHON_EXECUTABLE}
         ARGS setup_osx.py py2app
         COMMENT "Running py2app"
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 
-    add_custom_target(build_app ALL DEPENDS ${CMAKE_BINARY_DIR}/dist/Deskbox.app)
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/Deskbox.app DESTINATION "." USE_SOURCE_PERMISSIONS)
+    add_custom_target(build_app ALL DEPENDS ${CMAKE_BINARY_DIR}/dist/CuraDeskbox.app)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/CuraDeskbox.app DESTINATION "." USE_SOURCE_PERMISSIONS)
 
     set(CPACK_GENERATOR "DragNDrop")
 
