@@ -61,7 +61,7 @@ setup(
     app=["inst/bin/cura_app.py"],
     version="@CURA_MAJOR_VERSION@.@CURA_MINOR_VERSION@.@CURA_PATCH_VERSION@",
     author="Deskbox",
-    url="http://deskbox.com.br",
+    url="http://deskboxbrazil.github.io",
     license="GNU AFFERO GENERAL PUBLIC LICENSE (AGPL)",
     options={"py2app": OPTIONS },
     setup_requires=['py2app'],

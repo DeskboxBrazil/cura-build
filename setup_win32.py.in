@@ -71,15 +71,15 @@ print("Removing previous distribution package")
 shutil.rmtree("dist", True)
 
 setup(
-    name="Cura",
+    name="Deskbox",
     version="@CURA_MAJOR_VERSION@.@CURA_MINOR_VERSION@.@CURA_PATCH_VERSION@",
-    author="Ultimaker",
-    author_email="a.hiemstra@ultimaker.com",
-    url="http://software.ultimaker.com/",
+    author="Deskbox",
+    author_email="martin.elsner@gmail.com",
+    url="http://deskboxbrazil.github.io",
     license="GNU AFFERO GENERAL PUBLIC LICENSE (AGPL)",
     scripts=["inst/bin/cura_app.py"],
-    windows=[{"script": "inst/bin/cura_app.py", "dest_name": "Cura", "icon_resources": [(1, "@CMAKE_SOURCE_DIR@/cura.ico")]}], # Uncomment in production
-    #console=[{"script": "inst/bin/cura_app.py", "dest_name": "Cura"}], # Comment in production
+    windows=[{"script": "inst/bin/cura_app.py", "dest_name": "Deskbox", "icon_resources": [(1, "@CMAKE_SOURCE_DIR@/cura.ico")]}], # Uncomment in production
+    #console=[{"script": "inst/bin/cura_app.py", "dest_name": "Deskbox"}], # Comment in production
     options={"py2exe": {"skip_archive": False, "includes": includes}}
 )
 
@@ -125,4 +125,4 @@ numpy_core_glob = os.path.join(os.path.dirname(os.path.dirname("@PYTHON_LIBRARIE
 for fname in iglob(numpy_core_glob):
     shutil.copy(fname, 'dist')
 
-os.rename("dist/cura_app.exe", "dist/Cura.exe")
+os.rename("dist/cura_app.exe", "dist/Deskbox.exe")
