@@ -1,9 +1,9 @@
-filename = 'dist/Deskbox.dmg'
+filename = '@DMG_PATH@'
 volume_name = 'Deskbox'
-badge_icon = '/vagrant/Cura.icns'
+badge_icon = '@CMAKE_SOURCE_DIR@/Cura.icns'
 size = '150m'
 # Symlinks to create
-files = [ 'dist/Deskbox.app' ]
+files = [ '@APP_PATH@' ]
 symlinks = { 'Applications': '/Applications' }
 # Window position in ((x, y), (w, h)) format
 window_rect = ((635, 400), (650, 500))
@@ -11,5 +11,5 @@ icon_locations = {
     'Deskbox.app': (200, 350),
     'Applications': (450, 350)
 }
-background = '/vagrant/osx/dmg/background.png'
+background = '@CMAKE_SOURCE_DIR@/osx/dmg/background.png'
 icon_size = 64

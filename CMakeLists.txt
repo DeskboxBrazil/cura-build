@@ -166,7 +166,7 @@ endif()
 
 # Packaging
 
-set(CPACK_PACKAGE_NAME "Cura")
+set(CPACK_PACKAGE_NAME "Deskbox")
 set(CPACK_PACKAGE_VENDOR "Deskbox")
 set(CPACK_PACKAGE_VERSION_MAJOR ${CURA_MAJOR_VERSION})
 set(CPACK_PACKAGE_VERSION_MINOR ${CURA_MINOR_VERSION})
@@ -177,27 +177,40 @@ set(CPACK_PACKAGE_CONTACT "Martin Elsner <martin.elsner@gmail.com>")
 if(NOT APPLE)
     set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
 endif()
-set(CPACK_PACKAGE_EXECUTABLES Cura "Cura ${CURA_MAJOR_VERSION}.${CURA_MINOR_VERSION}.${CURA_PATCH_VERSION}")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "Cura ${CURA_MAJOR_VERSION}.${CURA_MINOR_VERSION}")
+set(CPACK_PACKAGE_EXECUTABLES Cura "Deskbox ${CURA_MAJOR_VERSION}.${CURA_MINOR_VERSION}.${CURA_PATCH_VERSION}")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "Deskbox")
 set(CPACK_MODULE_PATH ${CPACK_MODULE_PATH} ${CMAKE_SOURCE_DIR})
-set(CPACK_PACKAGE_FILE_NAME "CuraDeskbox")
+set(CPACK_PACKAGE_FILE_NAME "Deskbox")
 
 if(APPLE)
+    set(APP_NAME "${CPACK_PACKAGE_NAME}.app")
+    set(APP_PATH "${CMAKE_BINARY_DIR}/dist/${APP_NAME}")
 
     configure_file(setup_osx.py.in setup_osx.py @ONLY)
 
     add_custom_command(
-        OUTPUT ${CMAKE_BINARY_DIR}/dist/CuraDeskbox.app
+        OUTPUT ${APP_PATH}
         COMMAND ${PYTHON_EXECUTABLE}
         ARGS setup_osx.py py2app
         COMMENT "Running py2app"
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 
-    add_custom_target(build_app ALL DEPENDS ${CMAKE_BINARY_DIR}/dist/CuraDeskbox.app)
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/CuraDeskbox.app DESTINATION "." USE_SOURCE_PERMISSIONS)
+    add_custom_target(build_app ALL DEPENDS ${CMAKE_BINARY_DIR}/dist/Deskbox.app)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/Deskbox.app DESTINATION "." USE_SOURCE_PERMISSIONS)
 
-    set(CPACK_GENERATOR "DragNDrop")
+    # For OS X we are using dmgbuild instead of CPack
+    add_custom_target(build_dmg DEPENDS build_app)
+    set(DMG_NAME "${CPACK_PACKAGE_NAME}.dmg")
+    set(DMG_PATH "${CMAKE_BINARY_DIR}/dist/${DMG_NAME}")
+    configure_file(${CMAKE_SOURCE_DIR}/osx/dmg/package.py.in package.py @ONLY)
+    add_custom_command(
+        TARGET build_dmg
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E remove "${DMG_PATH}"
+        COMMAND dmgbuild -s package.py "${CPACK_PACKAGE_NAME}" "${DMG_PATH}"
+        COMMENT "The DMG file will be at ${DMG_PATH}"
+    )
 
 elseif(WIN32)
 
@@ -232,6 +245,7 @@ elseif(WIN32)
     set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
     set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
     set(CPACK_NSIS_MUI_FINISHPAGE_RUN "Cura.exe")
+    include(CPack)
 
 elseif(CYGWIN)
     # Not yet decided - probably pyinstaller + NSIS
@@ -277,7 +291,6 @@ else()
     string(REPLACE ";" "," DEB_DEPENDS "${DEB_DEPENDS}")
     set(CPACK_DEBIAN_PACKAGE_DEPENDS ${DEB_DEPENDS})
     set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
+    include(CPack)
 
 endif()
-
-include(CPack)

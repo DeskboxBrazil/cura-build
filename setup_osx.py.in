@@ -69,11 +69,11 @@ setup(
 
 # Copy the backend executable
 print("Copying CuraEngine to Contents/MacOS")
-shutil.copy("inst/bin/CuraEngine", "dist/Deskbox.app/Contents/MacOS/CuraEngine")
+shutil.copy("inst/bin/CuraEngine", "@APP_PATH@/Contents/MacOS/CuraEngine")
 
 # Remove all *_debug.x.dylib files since we do not need them but py2app copies
 # them anyway.
-for path, dirs, files in os.walk("dist/Deskbox.app/Contents"):
+for path, dirs, files in os.walk("@APP_PATH@/Contents"):
 	for file in files:
 		if "debug" in file:
 			print("Removing {0}".format(file))

@@ -20,14 +20,10 @@ vagrant ssh
 mkdir build
 cd build
 cmake /vagrant
-make
+make build_dmg
 ```
 4. The build process will start. It will take a while (from 15 minutes to 2 hours depending on your hardware), so be patient.
-5. Finally, to create the DMG package, run:
-```shell
-dmgbuild -s /vagrant/osx/dmg/package.py Deskbox dist/Deskbox.dmg
-```
-6. The installation package inside the virtual machine, in the `/Users/vagrant/build/dist` directory, with the name `Deskbox.dmg`. You can copy it anywhere else by using the file manager in the virtual machine, or you can access the virtual machine via an SFTP client like `FileZilla` (host: 192.168.33.10, user: vagrant, password: vagrant) and copy if off from there.
+6. The installation package will be generated inside the virtual machine, in the `/Users/vagrant/build/dist` directory, with the name `Deskbox.dmg`. You can copy it anywhere else by using the file manager in the virtual machine, or you can access the virtual machine via an SFTP client like `FileZilla` (host: 192.168.33.10, user: vagrant, password: vagrant) and copy if off from there.
 7. When you're done with the build, you should stop the virtual machine to free up the RAM and CPU resouces it allocates. Do this with:
 ```shell
 exit
@@ -56,5 +52,5 @@ vagrant box add 'AndrewDryga/vagrant-box-osx' virtualbox.box
 ```
 (Change `virtualbox.box` to the name of the file you downloaded, if it's different). This will manually install the box in your computer. Then, you can run `vagrant up` again and it will skip the download step, going on with the rest of the process.
 
-### OS X Virtual Machine performance
+### OS X Virtual Machine sluggish performance
 If the OS X virtual machine feels slow and unresponsive, you can fix that installing the [BeamOff](https://github.com/rtrouton/rtrouton_scripts/blob/master/rtrouton_scripts/fix_yosemite_vm_graphic_performance/installer/fix_yosemite_vm_graphic_performance.zip) tool.
