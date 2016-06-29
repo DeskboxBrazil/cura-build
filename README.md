@@ -6,5 +6,4 @@ For every target platform, a Vagrantfile was created so the complete build proce
 
 Look at the documentation for every target platform:
 * [OS X](osx/README.md)
-* Windows (to be written)
-* Linux (to be written)
+* [Windows](win32/README.md)
