@@ -128,7 +128,8 @@ ExternalProject_Add(CuraEngine
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=Release
 )
 
-ExternalProject_Add(Uranium
+ExternalProject_Add(
+    Uranium
     DEPENDS PyQt Arcus
     GIT_REPOSITORY https://github.com/DeskboxBrazil/Uranium
     GIT_TAG ${TAG_OR_BRANCH}
@@ -137,7 +138,8 @@ ExternalProject_Add(Uranium
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX}
 )
 
-ExternalProject_Add(Cura
+ExternalProject_Add(
+    Cura
     DEPENDS Uranium CuraEngine
     GIT_REPOSITORY https://github.com/DeskboxBrazil/Cura
     GIT_TAG ${TAG_OR_BRANCH}
@@ -146,10 +148,12 @@ ExternalProject_Add(Cura
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX}
 )
 
-ExternalProject_Add(cura-binary-data
+ExternalProject_Add(
+    cura-binary-data
     DEPENDS Cura
     GIT_REPOSITORY https://github.com/DeskboxBrazil/cura-binary-data
     GIT_TAG ${TAG_OR_BRANCH}
+    # URL /deskbox/cura-binary-data
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX}
 )
 
