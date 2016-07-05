@@ -239,10 +239,18 @@ elseif(WIN32)
 
     install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/ DESTINATION "." USE_SOURCE_PERMISSIONS COMPONENT "cura")
 
+    # Get the VCRedist from http://www.microsoft.com/en-us/download/details.aspx?id=26999
+    if(BUILD_64BIT)
+        install(FILES vcredist_x64.exe DESTINATION "." COMPONENT "vcredist")
+    else()
+        install(FILES vcredist_x86.exe DESTINATION "." COMPONENT "vcredist")
+    endif()
+
     install(DIRECTORY arduino DESTINATION "." COMPONENT "arduino")
 
     include(CPackComponent)
     cpack_add_component(cura DISPLAY_NAME "Executable and Data Files" REQUIRED)
+    cpack_add_component(vcredist DISPLAY_NAME "Install Visual Studio 2010 Redistributable")
     cpack_add_component(arduino DISPLAY_NAME "Install Arduino Drivers")
 
     set(CPACK_GENERATOR "NSIS")
