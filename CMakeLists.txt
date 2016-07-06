@@ -154,6 +154,7 @@ ExternalProject_Add(
     GIT_REPOSITORY https://github.com/DeskboxBrazil/cura-binary-data
     GIT_TAG ${TAG_OR_BRANCH}
     # URL /deskbox/cura-binary-data
+    # URL F:/programming/deskbox/cura-binary-data
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX}
 )
 

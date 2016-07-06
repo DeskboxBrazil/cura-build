@@ -50,4 +50,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Provisioning
   config.vm.provision "shell", privileged: false, path: "provision.sh"
 
+  # Message to end user
+  config.vm.post_up_message = "To keep folders synchronized, please now run:\nvagrant rsync-auto"
 end
