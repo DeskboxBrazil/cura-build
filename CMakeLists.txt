@@ -134,7 +134,7 @@ ExternalProject_Add(
     GIT_REPOSITORY https://github.com/DeskboxBrazil/Uranium
     GIT_TAG ${TAG_OR_BRANCH}
     # URL /deskbox/Uranium
-    # URL F:/programming/deskbox/Uranium
+    # URL Y:/Uranium
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX}
 )
 
@@ -144,7 +144,7 @@ ExternalProject_Add(
     GIT_REPOSITORY https://github.com/DeskboxBrazil/Cura
     GIT_TAG ${TAG_OR_BRANCH}
     # URL /deskbox/Cura
-    # URL F:/programming/deskbox/Cura
+    # URL Y:/Cura
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX}
 )
 
@@ -154,7 +154,7 @@ ExternalProject_Add(
     GIT_REPOSITORY https://github.com/DeskboxBrazil/cura-binary-data
     GIT_TAG ${TAG_OR_BRANCH}
     # URL /deskbox/cura-binary-data
-    # URL F:/programming/deskbox/cura-binary-data
+    # URL Y:/cura-binary-data
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNALPROJECT_INSTALL_PREFIX}
 )
 
